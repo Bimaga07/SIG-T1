@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../SGI-T.Domain/SGI-T.Domain.csproj" />
+  <Project Path="SIG-T-API/SIG-T-API.csproj" />
+</Solution>
