@@ -1,0 +1,85 @@
+﻿@page "/tareas"
+@using System.Text.Json
+@inject HttpClient Http
+
+<PageTitle>Gestión de Tareas - SIGT</PageTitle>
+
+<div class="container mt-4">
+    <h2 class="mb-4">📋 Listado de Tareas</h2>
+
+    @if (tareas == null)
+    {
+        <div class="spinner-border text-primary" role="status"></div>
+        <p>Cargando datos desde la API...</p>
+    }
+    else
+    {
+        <table class="table table-hover shadow-sm border">
+            <thead class="table-dark">
+                <tr>
+                    <th>Título</th>
+                    <th>Estado</th>
+                    <th>Usuario Asignado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in tareas)
+                {
+                    <tr>
+                        @* Intentamos leer en minúsculas que es el estándar de la API *@
+                        <td>@(t.TryGetProperty("titulo", out var tit) ? tit.GetString() : "Sin Título")</td>
+
+                        <td>
+                            <span class="badge bg-primary">
+                                @(t.TryGetProperty("estado", out var est) ? est.GetString() : "N/A")
+                            </span>
+                        </td>
+
+                        <td>@(t.TryGetProperty("usuarioAsignado", out var usr) ? usr.GetString() : "No asignado")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="card p-3 bg-light mt-4">
+        <h4>⚙️ Acciones de Control</h4>
+        <button class="btn btn-success me-2" @onclick="CargarTareas">🔄 Actualizar Lista</button>
+        <button class="btn btn-warning" @onclick="SolicitarReporte">📊 Solicitar Reporte (202)</button>
+
+        @if (!string.IsNullOrEmpty(mensaje))
+        {
+            <div class="alert alert-info mt-3">@mensaje</div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<JsonElement>? tareas;
+    private string mensaje = "";
+
+    protected override async Task OnInitializedAsync() => await CargarTareas();
+
+    private async Task CargarTareas()
+    {
+        try
+        {
+            tareas = await Http.GetFromJsonAsync<List<JsonElement>>("api/tareas");
+            mensaje = "Datos actualizados correctamente.";
+        }
+        catch (Exception)
+        {
+            mensaje = "Error: Asegúrate de que la API esté corriendo.";
+        }
+    }
+
+    private async Task SolicitarReporte()
+    {
+        // Esto prueba el requisito del Módulo 9: HTTP 202 Accepted
+        var response = await Http.PostAsync("api/reporte/tareas-finalizadas", null);
+        if (response.StatusCode == System.Net.HttpStatusCode.Accepted)
+        {
+            mensaje = "Solicitud de reporte aceptada (HTTP 202). El Worker la procesará.";
+        }
+    }
+}
