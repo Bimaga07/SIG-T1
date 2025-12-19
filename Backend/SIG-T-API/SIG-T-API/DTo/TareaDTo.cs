@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace SGI_T.Domain.DTos
+namespace SGIT.API.DTos
 {
-    public class TareaDto
+    public class TareaDTo
     {
         public int Id { get; set; }
         public string Titulo { get; set; } = string.Empty;

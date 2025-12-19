@@ -1,8 +1,9 @@
-﻿namespace SIGT.Domain.Entities;
+﻿
 
-public class Tarea
+namespace SIGT.Domain.DTo;
+
+public class TareaCreateDTo
 {
-    public int Id { get; set; }
     public string Titulo { get; set; } = string.Empty;
     public string? Descripcion { get; set; }
     public string Estado { get; set; } = string.Empty;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SGI_T.Domain.Entities
+namespace SIG.T.Domain.Entities
 {
     public class Usuario
     {

@@ -1,4 +1,4 @@
-﻿namespace SGI_T.Domain
+﻿namespace SGIT.Domain
 {
     public class Class1
     {
