@@ -1,0 +1,65 @@
+﻿GUÍA DE DESPLIEGUE Y CONFIGURACIÓN - PROYECTO SIG-T
+
+1. Requisitos Previos
+
+SQL Server 2019 o superior.
+
+.NET 8 SDK instalado en el servidor.
+
+IIS (Internet Information Services) con el módulo "ASP.NET Core Hosting Bundle".
+
+2. Configuración de la Base de Datos
+
+Ejecutar el script SIGT_Database.sql incluido en la carpeta /Database.
+
+El script creará automáticamente las tablas (Usuarios, Tareas, RegistroDeActividad).
+los Procedimientos Almacenados (sp_Tarea_Create, sp_Tarea_Update), el Trigger de auditoría y la Vista de reporte.
+
+3. Configuración del Backend (API)
+
+Archivo: appsettings.Production.json.
+
+ConnectionString: Cambiar el valor de DefaultConnection para que apunte al servidor de producción.
+
+Publicación: Clic derecho en SIGT.API > Publish > Folder.
+
+IIS: * Crear un nuevo "Website" apuntando a la carpeta publicada.
+
+Configurar el Application Pool en modo "No Managed Code".
+
+Asegurar que la Identity del Pool tenga permisos de lectura/escritura en la base de datos SQL.
+
+4. Configuración del Frontend (Blazor WASM)
+
+Archivo: Program.cs.
+
+BaseAddress: Asegurarse de que el HttpClient apunte a la URL pública de la API (ej. https://api.tu-dominio.com/).
+
+Publicación: Publicar como "Static Site" o dentro de un sitio de IIS.
+
+5. Configuración del Worker Service
+
+El proyecto SIGT.Worker debe publicarse como un "Windows Service" para garantizar su ejecución continua.
+
+Realiza el Polling cada 30 segundos para procesar reportes pendientes.
+
+📝 Resumen de Entregables (Checklist Final)
+
+
+Código Fuente: Backend, Frontend y Worker Service. ✌️
+
+Scripts SQL: Un archivo único con todas las definiciones (Tablas, SPs, Trigger y Vista). ✌️
+
+Historial de GIT: Verifica que tengas al menos 10 commits con los prefijos FEAT:, FIX:, CHORE:. 👀
+
+Batería de Pruebas: Debes poder demostrar:
+
+Creación de tarea (usando SP). ✌️
+
+Registro en tabla de auditoría (vía Trigger). ✌️
+
+Listado de tareas con nombre de usuario (vía Vista). ✌️
+
+Respuesta 202 Accepted en el endpoint de reportes. ✌️
+
+Logs del Worker Service ejecutándose cada 30 segundos. ✌️
