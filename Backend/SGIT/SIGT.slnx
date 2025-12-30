@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Readme.md" />
+  </Folder>
   <Project Path="../../Fronted/SIGT.Frontend/SIGT.Frontend.csproj" Id="82e0bf02-10ac-4b19-833c-043da179886f" />
   <Project Path="../SGI-T.Domain/SIGT.Domain.csproj" />
   <Project Path="../SIG-T-API/SIG-T-API/SIGT.API.csproj" />
