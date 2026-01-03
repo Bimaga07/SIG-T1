@@ -1,4 +1,3 @@
-
 USE SIGT;
 GO
 
